@@ -1,0 +1,53 @@
+patient = input("Patient name: ")
+
+requested = input("Requested departments: ").split(",")
+available = input("Available departments: ").split(",")
+previous = input("Previously visited departments: ").split(",")
+preferred = input("Preferred doctors: ").split(",")
+doctors = input("Available doctors: ").split(",")
+emergency = input("Emergency departments: ").split(",")
+
+requested = [x.strip() for x in requested]
+available = [x.strip() for x in available]
+previous = [x.strip() for x in previous]
+preferred = [x.strip() for x in preferred]
+doctors = [x.strip() for x in doctors]
+emergency = [x.strip() for x in emergency]
+
+R, A, P, E = set(requested), set(available), set(previous), set(emergency)
+
+
+common = R & A
+unavailable = R - A
+immediate = R & E
+duplicates = {x for x in requested if requested.count(x) > 1}
+
+
+A.add("General Medicine")
+if "Unknown" in A:
+    A.remove("Unknown")
+
+doctor_available = set(preferred) & set(doctors)
+
+
+recommended = list(common)[0] if common else "None"
+status = "Confirmed" if common else "Pending"
+
+print("\n--- APPOINTMENT REPORT ---")
+print("Patient:", patient)
+print("Requested:", requested)
+print("Available:", list(R & A))
+print("Unavailable:", list(unavailable))
+print("Common:", list(common))
+print("Previous:", previous)
+print("Emergency:", list(immediate))
+print("Duplicate Requests:", list(duplicates))
+print("Preferred Doctors Available:", list(doctor_available))
+print("Recommended Department:", recommended)
+print("Appointment Status:", status)
+
+
+print("First Department:", requested[0] if requested else "None")
+print("First Two Departments:", requested[:2])
+print("All Departments:", R | A)
+print("Cardiology Requested:", "Cardiology" in R)
